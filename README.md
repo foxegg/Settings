@@ -1,1 +1,1 @@
-# Settings
+#基于 android15版本的Settings在Android Studio中编译运行
