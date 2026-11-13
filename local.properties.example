@@ -1,0 +1,19 @@
+# 复制需要的行到 local.properties。该文件已被 .gitignore 忽略，不要提交。
+# Android Studio 打开工程后会自动写入 sdk.dir，把下面的配置留在同一个文件里即可。
+# sdk.dir=/path/to/Android/Sdk
+
+# 默认是阿里云百炼（Model Studio）北京地域的 OpenAI 兼容地址，末尾不要加 /chat/completions。
+# 官方文档说明 dashscope.aliyuncs.com 仍然可用。密钥和地域必须一致：
+# 北京密钥用下面这个地址；国际站（新加坡）密钥改成 https://dashscope-intl.aliyuncs.com/compatible-mode/v1
+# 若控制台给了业务空间专属域名，把 {WorkspaceId} 换成空间 ID：
+# https://{WorkspaceId}.cn-beijing.maas.aliyuncs.com/compatible-mode/v1
+GRADING_API_BASE=https://dashscope.aliyuncs.com/compatible-mode/v1
+GRADING_API_MODEL=qwen3-vl-plus
+
+# 只放在本机。不要写进仓库，也不要贴到日志或截图里。
+GRADING_API_KEY=
+
+# 可选：本机能访问 Google API 时，可改成 Gemini，而不是默认的百炼。
+# GRADING_API_BASE=https://generativelanguage.googleapis.com/v1beta/openai
+# GRADING_API_MODEL=gemini-3.1-pro-preview
+# GRADING_API_KEY=
