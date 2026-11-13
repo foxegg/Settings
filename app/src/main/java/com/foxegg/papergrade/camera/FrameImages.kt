@@ -33,17 +33,47 @@ object FrameImages {
         val height = image.height
         val pixelStride = plane.pixelStride
         val rowStride = plane.rowStride
-        if (pixelStride == 4 && rowStride >= width * 4 && rowStride % 4 == 0) {
-            val paddedWidth = rowStride / 4
-            val bitmap = Bitmap.createBitmap(paddedWidth, height, Bitmap.Config.ARGB_8888)
-            bitmap.copyPixelsFromBuffer(buffer)
-            if (paddedWidth == width) return bitmap
-            val tight = Bitmap.createBitmap(bitmap, 0, 0, width, height)
-                .copy(Bitmap.Config.ARGB_8888, false)
-            bitmap.recycle()
-            return tight
+        if (pixelStride == 4 && rowStride >= width * 4) {
+            val packed = packPlane(buffer, width, height, pixelStride, rowStride)
+            val bitmap = Bitmap.createBitmap(width, height, Bitmap.Config.ARGB_8888)
+            bitmap.copyPixelsFromBuffer(packed)
+            return bitmap
         }
         return slowRgba(buffer, width, height, pixelStride, rowStride)
+    }
+
+    /**
+     * CameraX 的平面缓冲长度是 `rowStride * (height - 1) + pixelStride * width`，
+     * 最后一行没有行尾填充。按整幅 `rowStride * height` 去拷贝会在有填充的机型上抛异常。
+     */
+    internal fun packPlane(
+        source: ByteBuffer,
+        width: Int,
+        height: Int,
+        pixelStride: Int,
+        rowStride: Int,
+    ): ByteBuffer {
+        val rowBytes = width * pixelStride
+        val packed = ByteBuffer.allocate(rowBytes * height)
+        val row = ByteArray(rowBytes)
+        val limit = source.limit()
+        for (y in 0 until height) {
+            val start = y * rowStride
+            val available = limit - start
+            if (available <= 0) {
+                row.fill(0)
+            } else if (available < rowBytes) {
+                row.fill(0)
+                source.position(start)
+                source.get(row, 0, available)
+            } else {
+                source.position(start)
+                source.get(row, 0, rowBytes)
+            }
+            packed.put(row)
+        }
+        packed.rewind()
+        return packed
     }
 
     private fun slowRgba(

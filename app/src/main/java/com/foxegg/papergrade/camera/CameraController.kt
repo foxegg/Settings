@@ -25,6 +25,7 @@ import androidx.camera.view.PreviewView
 import androidx.core.content.ContextCompat
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import java.util.concurrent.TimeUnit
 
 /**
  * 只负责预览、取帧和对焦锁定。这里不调用批改接口。
@@ -42,6 +43,9 @@ class CameraController(
     private var camera: Camera? = null
     private var generation = 0
     private var lockCallback: Runnable? = null
+
+    @Volatile
+    private var closed = false
 
     var isLocked: Boolean = false
         private set
@@ -76,8 +80,17 @@ class CameraController(
     }
 
     fun shutdown() {
+        closed = true
         unbind()
         analyzerExecutor.shutdown()
+        try {
+            if (!analyzerExecutor.awaitTermination(2, TimeUnit.SECONDS)) {
+                analyzerExecutor.shutdownNow()
+            }
+        } catch (error: InterruptedException) {
+            analyzerExecutor.shutdownNow()
+            Thread.currentThread().interrupt()
+        }
     }
 
     fun focusAndLock(previewView: PreviewView, x: Float, y: Float): Boolean {
@@ -150,8 +163,13 @@ class CameraController(
             .build()
         analysis.setAnalyzer(analyzerExecutor) { image ->
             try {
+                if (closed || boundGeneration != generation) return@setAnalyzer
                 val bitmap = FrameImages.toUprightCropped(image)
-                onFrame(bitmap)
+                if (closed || boundGeneration != generation) {
+                    bitmap.recycle()
+                } else {
+                    onFrame(bitmap)
+                }
             } catch (error: Exception) {
                 Log.e(TAG, "analyze", error)
             } finally {

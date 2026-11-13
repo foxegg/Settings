@@ -139,6 +139,10 @@ class MainActivity : AppCompatActivity() {
             return
         }
         val result = tracker.process(bitmap)
+        if (finished) {
+            bitmap.recycle()
+            return
+        }
         frameStore.set(bitmap, result.quad)
         runOnUiThread {
             if (finished) return@runOnUiThread
