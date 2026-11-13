@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="ink">#1C2430</color>
+    <color name="ink_muted">#5C6B7A</color>
+    <color name="paper">#F6F1E7</color>
+    <color name="accent">#0F6E4C</color>
+    <color name="on_accent">#FFFFFF</color>
+    <color name="warn_bg">#F8E3B5</color>
+    <color name="warn_ink">#6A4B12</color>
+    <color name="banner">#B31C2430</color>
+</resources>

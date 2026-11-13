@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">纸面辅助批改</string>
+    <string name="assist_note">辅助标记只在你点「批改」后出现。系统不自动给分，请对照标记自己写到纸上。</string>
+    <string name="rubric_hint">评分标准或参考答案</string>
+    <string name="demo_mode">演示模式（不上传、不请求模型）</string>
+    <string name="grade">批改</string>
+    <string name="grading">正在请求辅助批改…</string>
+    <string name="lock_focus">锁定对焦</string>
+    <string name="unlock_focus">解除锁定</string>
+    <string name="grade_idle">点「批改」后才会请求一次模型。之后挪动试卷只更新标记位置。</string>
+    <string name="need_paper">还没有跟踪到试卷。请让纸张完整出现在画面里。</string>
+    <string name="need_key">没有接口密钥。请在本机 local.properties 填写 GRADING_API_KEY，或打开演示模式。</string>
+    <string name="need_rubric">请先填写评分标准或参考答案，或打开演示模式。</string>
+    <string name="demo_applied">已叠上演示标记，没有请求模型。挪动试卷时标记会跟着走。</string>
+    <string name="marks_applied">已叠上 %1$d 个辅助标记。挪动试卷只更新位置，再次点「批改」才会重新请求。</string>
+    <string name="marks_empty">模型没有返回标记。可以补充评分标准后再点「批改」。</string>
+    <string name="rectify_failed">无法按纸面纠正这一帧，请让试卷更完整地出现在画面里。</string>
+    <string name="grade_failed">批改请求失败</string>
+    <string name="track_searching">正在寻找试卷</string>
+    <string name="track_ok">已跟踪纸面</string>
+    <string name="track_occluded">部分被挡住，仍在跟踪</string>
+    <string name="track_lost">跟踪丢失，请让试卷入画</string>
+    <string name="track_flatten_suffix">。褶皱较大，请先将试卷摊平</string>
+    <string name="opencv_failed">OpenCV 初始化失败，无法跟踪纸面</string>
+    <string name="permission_title">需要相机权限</string>
+    <string name="permission_body">相机用来看桌面上的试卷并跟踪纸张位置。只有你点「批改」且没有打开演示模式时，才会把这一张纠正后的试卷图发给模型。</string>
+    <string name="permission_grant">授予相机权限</string>
+    <string name="permission_settings">前往系统设置</string>
+</resources>
